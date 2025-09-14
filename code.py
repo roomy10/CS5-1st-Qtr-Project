@@ -47,7 +47,6 @@ def take(avail):
             break
         elif int(id)>len(avail) or int(id)<0:
             print("Id not found.")
-            continue
         else:
             id=int(id)
             i=id-1
@@ -67,7 +66,6 @@ def add(avail):
             break
         elif int(id)>len(avail) or int(id)<0:
             print("Id not found.")
-            continue
         else:
             id=int(id)
             i=id-1
@@ -101,6 +99,5 @@ while True:
             break
         else:
             print("Invalid option")
-            continue
     print("Thank you for checking on this lab.")
 print("Thank you for checking the logs.")
