@@ -45,7 +45,7 @@ def take(avail):
         id=input("Enter the id of the material you want: ")
         if id.lower()=="exit":
             break
-        elif int(id)>=len(avail) or int(id)<0:
+        elif int(id)>len(avail) or int(id)<0:
             print("Id not found.")
             continue
         else:
@@ -65,7 +65,7 @@ def add(avail):
         id=input("Enter the id of the material you want: ")
         if id.lower()=="exit":
             break
-        elif int(id)>=len(avail) or int(id)<0:
+        elif int(id)>len(avail) or int(id)<0:
             print("Id not found.")
             continue
         else:
