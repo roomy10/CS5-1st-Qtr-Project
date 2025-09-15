@@ -28,8 +28,12 @@ who's reserving, which lab, period, and the reason for use --> prompt to record 
 '''
 
 #Initializiation of Variables
-materials=[["Test Tubes", "Gloves", "Flasks", "Beakers"],["Bio stuff"]]
-avail=[[10,5,5,3],[1]]
+chem_materials1 = ["Test Tubes", "Gloves", "Flasks", "Beakers"]
+chem_materials2 = ["Test Tubes", "Gloves", "Flasks", "Beakers"]
+bio_materials = ["bio stuff"]
+cs_materials = ["Laptops"]
+materials=[chem_materials1,chem_materials2,bio_materials,cs_materials]
+avail=[[10,5,5,3],[10,5,5,3],[1],[10]]
 
 
 #Functions
@@ -37,7 +41,7 @@ def access(materials,avail):
     id=1
     print("Id:  Item and availability:")
     while id-1<len(materials):
-        print(str(id)+".    "+materials[id-1]+" - "+str(avail[id-1]))
+        print(str(id).zfill(2)+".    "+materials[id-1]+" - "+str(avail[id-1]))
         id+=1
 
 def take(avail):
@@ -78,17 +82,21 @@ def add(avail):
 #Code
 while True:
     lab=input("Enter the lab you want to check or exit to leave: ")
-    if lab.lower()=="chem" or lab.lower()=="chemistry":
+    if lab.lower()=="chem1" or lab.lower()=="chemistry1":
         a=0
-    elif lab.lower()=="bio" or lab.lower()=="biology":
+    elif lab.lower()=="chem2" or lab.lower()=="chemistry2":
         a=1
+    elif lab.lower()=="bio" or lab.lower()=="biology":
+        a=2
+    elif lab.lower()=="comsci" or lab.lower()=="computer science" or lab.lower()=="cs":
+        a=3
     elif lab.lower()=="exit":
         break
     else:
         print("Invalid option")
         continue
     while True:
-        command=input("Access/Take/Add: ")
+        command=input("Access/Take/Add/Exit: ")
         if command.lower()=="access":
             access(materials[a],avail[a])
         elif command.lower()=="take":
