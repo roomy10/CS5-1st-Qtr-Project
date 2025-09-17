@@ -47,7 +47,13 @@ cs_lab_materials = ["Acer Laptop", "PC"]
 
 materials=[chem1_materials,chem2_materials,bio_lab1_materials,bio_lab2_materials,
            bio_lab3_materials,microbio_lab_materials,cs_lab_materials]
-no_materials=[[10,5,5,3],[10,5,5,3],[0],[0],[0],[0],[30, 30]]
+
+chem_avail1 = [10,5,5,3]
+chem_avail2 = [10,5,5,3]
+bio_avail = [1]
+cs_avail = [10]
+
+avail=[chem_avail1,chem_avail2,bio_avail,cs_avail]
 
 
 #Functions
