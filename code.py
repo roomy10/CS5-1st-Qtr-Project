@@ -48,12 +48,12 @@ cs_lab_materials = ["Acer Laptop", "PC"]
 materials=[chem1_materials,chem2_materials,bio_lab1_materials,bio_lab2_materials,
            bio_lab3_materials,microbio_lab_materials,cs_lab_materials]
 
-chem_avail1 = [10,5,5,3]
-chem_avail2 = [10,5,5,3]
-bio_avail = [1]
-cs_avail = [10]
+no_chem_material1 = [10,5,5,3]
+no_chem_material2 = [10,5,5,3]
+no_bio_material = [1]
+no_cs_material = [10]
 
-avail=[chem_avail1,chem_avail2,bio_avail,cs_avail]
+no_material=[no_chem_material1,no_chem_material2,no_bio_material,no_cs_material]
 
 
 #Functions
@@ -83,20 +83,20 @@ def take(no_materials):
                     break
     return no_materials
  
-def add(avail):
+def add(no_material):
     while True:
         id=input("Enter the id of the material you want: ")
         if id.lower()=="exit":
             break
-        elif int(id)>len(avail) or int(id)<0:
+        elif int(id)>len(no_material) or int(id)<0:
             print("Id not found.")
         else:
             id=int(id)
             i=id-1
             amt=int(input("Enter how many you want to add: "))
-            avail[i]+=amt
+            no_material[i]+=amt
             break
-    return avail
+    return no_material
  
  def reservations(index):
     output = ""
