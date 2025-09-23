@@ -27,19 +27,72 @@ who's reserving, which lab, period, and the reason for use --> prompt to record 
  
 '''
 
+"""
+Chem Equipment:
+1. Chemistry Lab Apparatus: Safety Goggles
+2. Chemistry Lab Apron
+3. Chemical Resistant Gloves
+4. Chemistry Lab Apparatus: Beakers
+5. Chemistry Lab Apparatus: Conical Flask
+6. Boiling Flask
+7. Chemistry Lab Apparatus: Test Tubes
+8. Watch Glass
+9. Crucible or Mortar & Pestle
+10. Funnel
+11. Measuring Cylinder
+12. Volumetric Flask
+13. Dropper
+14. Pipettes
+15. Burettes
+16. Ring Stands, Rings, and Clamps
+17. Tongs & Forceps
+18. Spatulas & Scopulas
+19. Thermometer
+20. Bunsen Burner
+21. Litmus and Filter Paper
+
+Bio:
+
+Microscope
+Test tubes and test tube racks	
+Dissecting tool kit
+Hot plate
+Electronic balance
+orceps
+Beakers
+Conical flasks
+Evaporating dish
+Funnels
+Graduated cylinders
+Droppers and pipettes
+Dissecting pan
+Glass slides and coverslips
+Inoculating loops and petri dishes
+Thermometer
+Spatulas and Scopulas
+Bunsen burner  
+Alcohol burner:
+Litmus
+Filter papers
+
+
+Not sure about phyics lab
+But another idea is to put all the materials under one, the stockroom if you get what I mean
+"""
+
 #Initializiation of Variables
 cs_lab_schedule = []
 bio_lab_schedule = []
 chem_lab_schedule = []
 physics_lab_schedule = []
 
-cs_lab1 = [] 
-cs_lab2 = []
-cs_lab3 = []
+cs_lab1 = [] #Probably obsoleter now since there's pretty much nothing to be borrowed. 
+cs_lab2 = [] #I plan to add the physics stockroom we'll just put it as CS and Physics Stockroom as is the case irl. Equipment for Physics lab and Projector
+cs_lab3 = [] 
 
 chem1_materials = ["Test Tubes", "Gloves", "Flasks", "Beakers"]
 chem2_materials = ["Test Tubes", "Gloves", "Flasks", "Beakers"]
-bio_lab1_materials = ["placeholder"]
+bio_lab1_materials = ["placeholder"] 
 bio_lab2_materials = ["placeholder"]
 bio_lab3_materials = ["placeholder"]
 microbio_lab_materials = ["placeholder"]
@@ -47,13 +100,7 @@ cs_lab_materials = ["Acer Laptop", "PC"]
 
 materials=[chem1_materials,chem2_materials,bio_lab1_materials,bio_lab2_materials,
            bio_lab3_materials,microbio_lab_materials,cs_lab_materials]
-
-no_chem_material1 = [10,5,5,3]
-no_chem_material2 = [10,5,5,3]
-no_bio_material = [1]
-no_cs_material = [10]
-
-no_material=[no_chem_material1,no_chem_material2,no_bio_material,no_cs_material]
+no_materials=[[10,5,5,3],[10,5,5,3],[0],[0],[0],[0],[30, 30]]
 
 
 #Functions
@@ -83,22 +130,22 @@ def take(no_materials):
                     break
     return no_materials
  
-def add(no_material):
+def add(avail):
     while True:
         id=input("Enter the id of the material you want: ")
         if id.lower()=="exit":
             break
-        elif int(id)>len(no_material) or int(id)<0:
+        elif int(id)>len(avail) or int(id)<0:
             print("Id not found.")
         else:
             id=int(id)
             i=id-1
             amt=int(input("Enter how many you want to add: "))
-            no_material[i]+=amt
+            avail[i]+=amt
             break
-    return no_material
+    return avail
  
- def reservations(index):
+def reservations(index): # Needs a little bit of work in regards to getting the reservations
     output = ""
     lab_type = ""
     day = input("Day of the week: ")
