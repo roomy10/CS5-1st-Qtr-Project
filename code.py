@@ -1,263 +1,239 @@
-#Laboratory Tracker CS5 1st Quarter Project
+# =============  Laboratory Tracker CS5 1st Quarter Project ============= 
 
-'''
-Flow
+# ================= STOCKROOMS =================
 
--- User can end or backtrack transaction at any point (need function)
--- Record transactions that happened in the day ie. current session. 
--- User can input "standing" to check current standing of all transactions
--- End with a receipt showing which lab and equipment are reserved (ex. cs_lab1 -- 1st period, previous quanitity >> current quantity)
+# Chemistry Stockroom 
+chem_stockroom = [
+    "Safety Goggles","Lab Apron","Chemical Resistant Gloves","Beakers",
+    "Conical Flasks","Boiling Flasks","Test Tubes","Watch Glass",
+    "Crucible/Mortar & Pestle","Funnels","Measuring Cylinders",
+    "Volumetric Flasks","Droppers","Pipettes","Burettes",
+    "Ring Stands, Rings, and Clamps","Tongs & Forceps",
+    "Spatulas & Scopulas","Thermometer","Bunsen Burner",
+    "Litmus and Filter Paper"
+]
+no_chem_stockroom = [10,10,50,20,15,15,30,10,5,10,15,15,10,10,10,10,5,5,10,3,20]
 
-Command (Which lab for transaction) --> if
+# Biology Stockroom
+bio_stockroom = [
+    "Microscope","Test tubes and racks","Dissecting tool kit","Hot plate",
+    "Electronic balance","Forceps","Beakers","Conical flasks","Evaporating dish",
+    "Graduated cylinders","Droppers & pipettes","Dissecting pan",
+    "Glass slides & coverslips","Inoculating loops & Petri dishes",
+    "Thermometer","Spatulas & Scopulas","Bunsen Burner","Alcohol Burner",
+    "Litmus and Filter Paper"
+]
+no_bio_stockroom = [10,10,5,10,5,5,20,15,20,20,10,5,10,10,20,5,5,5,20]
 
---> cs lab --> lab transaction (Reservation) --> 
-cs_lab_reservations list (in periods, 10 periods total, excluding wellness and break period) --> 
-who's reserving, which lab, period, and the reason for use --> prompt to record another transaction (loop back)
+# Microbiology Stockroom 
+microbio_stockroom = [
+    "Microscope (high power)","Autoclave","Incubator","Petri dishes",
+    "Test tubes","Inoculating loop","Laminar flow hood","Glass slides & coverslips"
+]
+no_microbio_stockroom = [10, 2, 3, 50, 40, 20, 1, 100]
 
+# Computer Science Stockroom 
+cs_stockroom = ["Acer Laptop","PC","Projector 1","Projector 2","Projector 3"]
+no_cs_stockroom = [30,30,3,3,3]
 
---> bio lab --> Reservation (in periods, 10 periods total, excluding wellness and break period) 
---> lab transaction (Access available equipment/Borrowing equipment from the stockroom/Add or Returning of borrowed equipment/NA)
---> who's reserving, which lab, period, and the reason for use --> prompt to record another transaction (loop back)
+# Physics Stockroom 
+physics_stockroom = [
+    "Multimeter","Power supply","Oscilloscope","Resistors set","Capacitors set",
+    "Wires & connectors","Force meter","Pendulum set","Lens & mirrors kit",
+    "Projector"
+]
+no_physics_stockroom = [10, 5, 3, 50, 40, 100, 5, 5, 15, 3]
 
+# ================= MASTER LISTS =================
+materials = [
+    chem_stockroom,
+    bio_stockroom,
+    microbio_stockroom,
+    cs_stockroom,
+    physics_stockroom
+]
 
---> chem lab--> Reservation (in periods, 10 periods total, excluding wellness and break period) 
---> lab transaction (Access available equipment/Borrowing equipment from the stockroom/Add or Returning of borrowed equipment/NA)
---> who's reserving, which lab, period, and the reason for use --> prompt to record another transaction (loop back)
+no_material = [
+    no_chem_stockroom,
+    no_bio_stockroom,
+    no_microbio_stockroom,
+    no_cs_stockroom,
+    no_physics_stockroom
+]
 
- 
-'''
+# ================= TRACKING =================
+students_reserved = 0
+reservations_count = {"Chemistry": 0, "Biology": 0, "Physics": 0, "CS": 0}
+borrowed_count = 0
+returned_count = 0
+reservation_days = {"Chemistry": [], "Biology": [], "Physics": [], "CS": []}  # grouped by lab
 
-"""
-Chem Equipment:
-1. Chemistry Lab Apparatus: Safety Goggles
-2. Chemistry Lab Apron
-3. Chemical Resistant Gloves
-4. Chemistry Lab Apparatus: Beakers
-5. Chemistry Lab Apparatus: Conical Flask
-6. Boiling Flask
-7. Chemistry Lab Apparatus: Test Tubes
-8. Watch Glass
-9. Crucible or Mortar & Pestle
-10. Funnel
-11. Measuring Cylinder
-12. Volumetric Flask
-13. Dropper
-14. Pipettes
-15. Burettes
-16. Ring Stands, Rings, and Clamps
-17. Tongs & Forceps
-18. Spatulas & Scopulas
-19. Thermometer
-20. Bunsen Burner
-21. Litmus and Filter Paper
+# ================= FUNCTIONS =================
+def access(index): 
+    print("\n============================================")
+    print("Id:  Item and availability:")
+    for i, item in enumerate(materials[index], start=1):
+        print(f"{str(i).zfill(2)}. {item} - {no_material[index][i-1]}")
+    print("============================================\n")
 
-Bio:
-
-Microscope
-Test tubes and test tube racks	
-Dissecting tool kit
-Hot plate
-Electronic balance
-orceps
-Beakers
-Conical flasks
-Evaporating dish
-Funnels
-Graduated cylinders
-Droppers and pipettes
-Dissecting pan
-Glass slides and coverslips
-Inoculating loops and petri dishes
-Thermometer
-Spatulas and Scopulas
-Bunsen burner  
-Alcohol burner:
-Litmus
-Filter papers
-
-
-Not sure about phyics lab
-But another idea is to put all the materials under one, the stockroom if you get what I mean
-"""
-
-#Initializiation of Variables
-cs_lab_schedule = []
-bio_lab_schedule = []
-chem_lab_schedule = []
-physics_lab_schedule = []
-
-cs_lab1 = [] #Probably obsoleter now since there's pretty much nothing to be borrowed. 
-cs_lab2 = [] #I plan to add the physics stockroom we'll just put it as CS and Physics Stockroom as is the case irl. Equipment for Physics lab and Projector
-cs_lab3 = [] 
-
-chem1_materials = ["Goggles","Apron","Gloves","Beakers","Conical flasks","Boiling flasks","Test tubes","Watch glass",
-                   "Crucible/Mortar & Pestle","Funnels","Measuring Cylinders","Volumetric Flasks","Droppers","Pippetes",
-                   "Burettes","Ring stands, rings, and Clamps","Tongs & Forceps","Spatulas & Scopulas","Thermometer",
-                   "Bunsen burner","Litmus and Filter paper"]
-chem2_materials = ["Goggles","Apron","Gloves","Beakers","Conical flasks","Boiling flasks","Test tubes","Watch glass",
-                   "Crucible/Mortar & Pestle","Funnels","Measuring Cylinders","Volumetric Flasks","Droppers","Pippetes",
-                   "Burettes","Ring stands, rings, and Clamps","Tongs & Forceps","Spatulas & Scopulas","Thermometer",
-                   "Bunsen burner","Litmus and Filter paper"]
-bio_lab1_materials = ["Microscope","Test tube and test tube racks","Dissecting tool kit","Hot plate","Electronic balance","Forceps",
-                 "Beakers","Conical flasks","Evaporating dish","Graduated cylinders","Droppers & pippettes","Dissecting pan",
-                 "Glass slides & coverslips","Inoculating loops & petri dishes","Thermometer","Spatulas & Scopulas",
-                 "Bunsen burner","Alcohol burner","Litmus and filter paper"] 
-bio_lab2_materials = ["Microscope","Test tube and test tube racks","Dissecting tool kit","Hot plate","Electronic balance","Forceps",
-                 "Beakers","Conical flasks","Evaporating dish","Graduated cylinders","Droppers & pippettes","Dissecting pan",
-                 "Glass slides & coverslips","Inoculating loops & petri dishes","Thermometer","Spatulas & Scopulas",
-                 "Bunsen burner","Alcohol burner","Litmus and filter paper"]
-bio_lab3_materials = ["Microscope","Test tube and test tube racks","Dissecting tool kit","Hot plate","Electronic balance","Forceps",
-                 "Beakers","Conical flasks","Evaporating dish","Graduated cylinders","Droppers & pippettes","Dissecting pan",
-                 "Glass slides & coverslips","Inoculating loops & petri dishes","Thermometer","Spatulas & Scopulas",
-                 "Bunsen burner","Alcohol burner","Litmus and filter paper"]
-microbio_lab_materials = ["placeholder"]
-cs_lab_materials = ["Acer Laptop", "PC"]
-
-materials=[chem1_materials,chem2_materials,bio_lab1_materials,bio_lab2_materials,
-           bio_lab3_materials,microbio_lab_materials,cs_lab_materials]
-no_chem_material1 = [10,10,50,20,15,15,30,10,5,10,15,15,10,10,10,10,5,5,10,3,20]
-no_chem_material2 = [10,10,50,20,15,15,30,10,5,10,15,15,10,10,10,10,5,5,10,3,20]
-no_bio_material = [10,10,5,10,5,5,20,15,20,20,10,5,10,10,20,5,5,5,20]
-no_cs_material = [30,30]
-no_material=[no_chem_material1,no_chem_material2,no_bio_material,no_cs_material]
-
-#Functions
-def access(materials):
-    id=1
-    print("Id:  Item and no_materialsability:")
-    while id-1<len(materials):
-        print(str(id).zfill(2)+".    "+materials[id-1]+" - "+str(materials[1[id-1]]))
-        id+=1
-
-def take(no_materials):
+def take(no_materials, index, student):
+    global borrowed_count
+    borrowed_items = []
     while True:
-        id=input("Enter the id of the material you want: ")
+        id=input("Enter the id of the material you want (or 'exit' to stop): ")
         if id.lower()=="exit":
             break
-        elif int(id)>len(no_materials) or int(id)<0:
+        elif not id.isdigit() or int(id)>len(no_materials) or int(id)<=0:
             print("Id not found.")
         else:
-            id=int(id)
-            i=id-1
-            while True:
-                amt=int(input("Enter how many you want to take: "))
-                if amt>no_materials[i]:
-                    print("Not enough.")
-                else:
-                    no_materials[i]-=amt
-                    break
-    return no_materials
- 
-def add(avail):
+            i=int(id)-1
+            print(f"You chose: {materials[index][i]}")
+            amt=int(input("Enter how many you want to take: "))
+            if amt>no_materials[i]:
+                print("Not enough.")
+            else:
+                no_materials[i]-=amt
+                borrowed_count += amt
+                borrowed_items.append(f"{materials[index][i]} ({amt})")
+                print(f"Reserved successfully. Remaining: {no_materials[i]}")
+        more = input("Do you want to borrow another equipment? (y/n): ").lower()
+        if more != "y":
+            break
+    return borrowed_items
+
+def add(avail, index, student): 
+    global returned_count
+    returned_items = []
     while True:
-        id=input("Enter the id of the material you want: ")
+        id=input("Enter the id of the material you want to return/add (or 'exit' to stop): ")
         if id.lower()=="exit":
             break
-        elif int(id)>len(avail) or int(id)<0:
+        elif not id.isdigit() or int(id)>len(avail) or int(id)<=0:
             print("Id not found.")
         else:
-            id=int(id)
-            i=id-1
+            i=int(id)-1
+            print(f"You chose: {materials[index][i]}")
             amt=int(input("Enter how many you want to add: "))
             avail[i]+=amt
+            returned_count += amt
+            returned_items.append(f"{materials[index][i]} ({amt})")
+            print(f"Added successfully. Now available: {avail[i]}")
+        more = input("Do you want to return another equipment? (y/n): ").lower()
+        if more != "y":
             break
-    return avail
- 
-def reservations(index): # Needs a little bit of work in regards to getting the reservations
-    output = ""
-    lab_type = ""
-    day = input("Day of the week: ")
-    time = input("Period/Schedule (ex. 1st Period): ")
-    if index == 0:
-        lab = "Chem Lab 1"
-        lab_type = "Chem Lab"
-    elif index == 1:
-        lab = "Chem Lab 2"
-        lab_type = "Chem Lab"
-        
-    elif index == 2:
-        lab = "Biology Lab 1"
-        lab_type = "Bio Lab"
-    elif index == 3:
-        lab = "Biology Lab 2"
-        lab_type = "Bio Lab"
-    elif index == 4:
-        lab = "Biology Lab 3"
-        lab_type = "Bio Lab"
-    elif index == 5:
-        lab = "Microbio Lab"
-        lab_type = "Bio Lab"
-        
-    elif index == 6:
-        lab = "Computer Science Lab 1"
-        lab_type = "CS Lab"
-    elif index == 7:
-        lab = "Computer Science Lab 2"
-        lab_type = "CS Lab"
-    elif index == 8:
-        lab = "Computer Science Lab 3"
-        lab_type = "CS Lab"
-        
-    output = f"{lab} -- {time} on {day}"
-    if lab_type == "Chem Lab":
-        if output not in chem_lab_schedule:
-            chem_lab_schedule.append(output)
-        else:
-            return ":::::: Error :::::: \n A reservation already exists"
-            
-    elif lab_type == "Bio Lab":
-        if output not in chem_lab_schedule:
-            bio_lab_schedule.append(output)
-        else:
-            return ":::::: Error :::::: \n A reservation already exists"
-    elif lab_type == "CS Lab":
-        if output not in chem_lab_schedule:
-            cs_lab_schedule.append(output)
-        else:
-            return ":::::: Error :::::: \n A reservation already exists"
-    return output
+    return returned_items
 
+def per_transaction_receipt(name, grade_section, reason, day, time, borrowed, returned): 
+    print("\n======= TRANSACTION RECEIPT =======")
+    print(f"Name: {name}")
+    print(f"Grade and Section: {grade_section}")
+    print(f"Reason for using lab: {reason}")
+    print(f"Day Reserved: {day}")
+    print(f"Time Reserved: {time}")
+    print(f"Equipment Borrowed: {borrowed if borrowed else 'n/a'}")
+    print(f"Equipment Returned: {returned if returned else 'n/a'}")
+    print("===================================\n")
 
-#Code
+def total_summary(): 
+    print("\n======= SUMMARY OF TRANSACTIONS =======")
+    print(f"# of students that reserved: {students_reserved}")
+    print(f"# of reservations for Biology Labs: {reservations_count['Biology']}")
+    print(f"# of reservations for Chemistry Labs: {reservations_count['Chemistry']}")
+    print(f"# of reservations for Physics Labs: {reservations_count['Physics']}")
+    print(f"# of reservations for CS Labs: {reservations_count['CS']}\n")
+    print(f"# of reserved equipment: {borrowed_count}")
+    print(f"# of returned equipment: {returned_count}")
+    print("\nReservation Days by Lab:")
+    for lab, days in reservation_days.items():
+        if days:
+            print(f"- {lab}:")
+            for d in days:
+                print(f"   • {d}")
+    print("=======================================\n")
+
+# ================= Transaction Main =================
 print("\n\n                   Laboratory Transaction Recorder/Tracker \n")
 print("••••••••••• Please input the required specifications for the transaction details •••••••••••")
 print("•••••••••••• You may input exit at any stages of the transaction to end early •••••••••••••\n\n\n")
+
 while True:
-    print("•Note that the available labs are Bio (1, 2, MicroBio), Chem (1, 2), CS (1,2,3), Physics (1, 2) \n")
-    lab=input("Enter the lab you want to check or exit to leave: ").strip().lower()
-    if lab=="chem1" or lab=="chemistry1":
-        index=0
-    elif lab=="chem2" or lab=="chemistry2":
-        index=1
-    elif lab=="bio1" or lab=="biology1":
-        index=2
-    elif lab=="bio2" or lab=="biology2":
-        index=3
-    elif lab=="bio3" or lab=="biology2":
-        index=4
-    elif lab=="microbio" or lab=="microbioology":
-        index=5
-    elif lab=="comsci1" or lab=="computerscience1" or lab=="cs1":
-        index=6
-    elif lab=="comsci2" or lab=="computerscience2" or lab=="cs2":
-        index=7
-    elif lab=="comsci3" or lab=="computerscience3" or lab=="cs3":
-        index=8
+    print("•Note that the available labs are: ")
+    print("Chem Labs (1, 2)")
+    print("Bio Labs (1, 2, 3, MicroBio)")
+    print("CS Labs (1, 2, 3)")
+    print("Physics Labs (1, 2, 3)\n")
+    
+    lab=input("Enter the lab you want to reserve or 'exit' to leave: ").strip().lower()
+    
+    if lab in ["chem1","chemistry1","chem2","chemistry2"]:
+        index=0; labname="Chemistry Lab"; labkey="Chemistry"
+    elif lab in ["bio1","biology1","bio2","biology2","bio3","biology3"]:
+        index=1; labname="Biology Lab"; labkey="Biology"
+    elif lab in ["microbio","microbiology"]:
+        index=2; labname="Microbiology Lab"; labkey="Biology"
+    elif lab in ["comsci1","computerscience1","cs1","comsci2","computerscience2","cs2",
+                 "comsci3","computerscience3","cs3"]:
+        index=3; labname="Computer Science Lab"; labkey="CS"
+    elif lab in ["physics1","physics2","physics3","physics"]:
+        index=4; labname="Physics Lab"; labkey="Physics"
     elif lab=="exit":
         break
     else:
-        print("Invalid option")
+        print("Invalid option\n")
         continue
-    while True:
-        access(index)
-        command=input("Borrowing equipment or Adding/Returning equipment?\n").strip().lower()
-        if command=="take":
-            take(no_materials[index])
-        elif command=="add":
-            add(no_materials[index])
-        elif command=="exit":
-            break
-        else:
-            print("Invalid option")
-    print("Thank you for checking on this lab.")
-print("Thank you for checking the logs.")
+
+    # Student info
+    print("\n===== Reservation Details =====")
+    name = input("Enter your full name (or 'exit' to cancel): ")
+    if name.lower() == "exit":
+        print("Transaction canceled.\n")
+        continue
+    grade_section = input("Enter your grade and section (or 'exit' to cancel): ")
+    if grade_section.lower() == "exit":
+        print("Transaction canceled.\n")
+        continue
+    reason = input("Enter your purpose for using the lab (or 'exit' to cancel): ")
+    if reason.lower() == "exit":
+        print("Transaction canceled.\n")
+        continue
+    day = input("Enter the day of reservation (e.g., Monday, January 1) or 'exit': ")
+    if day.lower() == "exit":
+        print("Transaction canceled.\n")
+        continue
+    time = input("Enter the time of reservation (e.g., 10:30 AM or 12 PM) or 'exit': ")
+    if time.lower() == "exit":
+        print("Transaction canceled.\n")
+        continue
+
+    student = (name, grade_section, reason, day, time)
+    reservation_days[labkey].append(day)
+
+    # Ask if they want to borrow/return
+    print("\n===== Accessing Equipment =====")
+    borrowed_items = []
+    returned_items = []
+    choice = input("Do you want to borrow or return equipment? (yes/no): ").strip().lower()
+    if choice == "yes":
+        while True:
+            access(index)
+            command=input("Borrowing equipment (take) or Returning equipment (add)?\n(Type 'exit' to stop): ").strip().lower()
+            if command=="take":
+                borrowed_items.extend(take(no_material[index], index, student))
+            elif command=="add":
+                returned_items.extend(add(no_material[index], index, student))
+            elif command=="exit":
+                break
+            else:
+                print("Invalid option\n")
+    else:
+        print("Skipping equipment access...\n")
+
+    students_reserved += 1
+    reservations_count[labkey] += 1
+    per_transaction_receipt(name, grade_section, reason, day, time,
+                            ", ".join(borrowed_items) if borrowed_items else None,
+                            ", ".join(returned_items) if returned_items else None)
+
+    print("\nThank you for checking on this lab.\n")
+
+total_summary()
