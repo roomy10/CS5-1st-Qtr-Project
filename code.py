@@ -90,18 +90,36 @@ cs_lab1 = [] #Probably obsoleter now since there's pretty much nothing to be bor
 cs_lab2 = [] #I plan to add the physics stockroom we'll just put it as CS and Physics Stockroom as is the case irl. Equipment for Physics lab and Projector
 cs_lab3 = [] 
 
-chem1_materials = ["Test Tubes", "Gloves", "Flasks", "Beakers"]
-chem2_materials = ["Test Tubes", "Gloves", "Flasks", "Beakers"]
-bio_lab1_materials = ["placeholder"] 
-bio_lab2_materials = ["placeholder"]
-bio_lab3_materials = ["placeholder"]
+chem1_materials = ["Goggles","Apron","Gloves","Beakers","Conical flasks","Boiling flasks","Test tubes","Watch glass",
+                   "Crucible/Mortar & Pestle","Funnels","Measuring Cylinders","Volumetric Flasks","Droppers","Pippetes",
+                   "Burettes","Ring stands, rings, and Clamps","Tongs & Forceps","Spatulas & Scopulas","Thermometer",
+                   "Bunsen burner","Litmus and Filter paper"]
+chem2_materials = ["Goggles","Apron","Gloves","Beakers","Conical flasks","Boiling flasks","Test tubes","Watch glass",
+                   "Crucible/Mortar & Pestle","Funnels","Measuring Cylinders","Volumetric Flasks","Droppers","Pippetes",
+                   "Burettes","Ring stands, rings, and Clamps","Tongs & Forceps","Spatulas & Scopulas","Thermometer",
+                   "Bunsen burner","Litmus and Filter paper"]
+bio_lab1_materials = ["Microscope","Test tube and test tube racks","Dissecting tool kit","Hot plate","Electronic balance","Forceps",
+                 "Beakers","Conical flasks","Evaporating dish","Graduated cylinders","Droppers & pippettes","Dissecting pan",
+                 "Glass slides & coverslips","Inoculating loops & petri dishes","Thermometer","Spatulas & Scopulas",
+                 "Bunsen burner","Alcohol burner","Litmus and filter paper"] 
+bio_lab2_materials = ["Microscope","Test tube and test tube racks","Dissecting tool kit","Hot plate","Electronic balance","Forceps",
+                 "Beakers","Conical flasks","Evaporating dish","Graduated cylinders","Droppers & pippettes","Dissecting pan",
+                 "Glass slides & coverslips","Inoculating loops & petri dishes","Thermometer","Spatulas & Scopulas",
+                 "Bunsen burner","Alcohol burner","Litmus and filter paper"]
+bio_lab3_materials = ["Microscope","Test tube and test tube racks","Dissecting tool kit","Hot plate","Electronic balance","Forceps",
+                 "Beakers","Conical flasks","Evaporating dish","Graduated cylinders","Droppers & pippettes","Dissecting pan",
+                 "Glass slides & coverslips","Inoculating loops & petri dishes","Thermometer","Spatulas & Scopulas",
+                 "Bunsen burner","Alcohol burner","Litmus and filter paper"]
 microbio_lab_materials = ["placeholder"]
 cs_lab_materials = ["Acer Laptop", "PC"]
 
 materials=[chem1_materials,chem2_materials,bio_lab1_materials,bio_lab2_materials,
            bio_lab3_materials,microbio_lab_materials,cs_lab_materials]
-no_materials=[[10,5,5,3],[10,5,5,3],[0],[0],[0],[0],[30, 30]]
-
+no_chem_material1 = [10,10,50,20,15,15,30,10,5,10,15,15,10,10,10,10,5,5,10,3,20]
+no_chem_material2 = [10,10,50,20,15,15,30,10,5,10,15,15,10,10,10,10,5,5,10,3,20]
+no_bio_material = [10,10,5,10,5,5,20,15,20,20,10,5,10,10,20,5,5,5,20]
+no_cs_material = [30,30]
+no_material=[no_chem_material1,no_chem_material2,no_bio_material,no_cs_material]
 
 #Functions
 def access(materials):
